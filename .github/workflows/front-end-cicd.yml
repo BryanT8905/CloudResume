@@ -13,17 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 15
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
-
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -40,6 +29,3 @@ jobs:
 
       - name: Sync files to S3
         run: aws s3 sync ./website s3://cloudres.com
-
-      - name: Invalidate Cloudfront Cache
-        run: ws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
