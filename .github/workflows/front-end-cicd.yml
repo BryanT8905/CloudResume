@@ -30,6 +30,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    steps:
       - name: Sync files to S3
         run: aws s3 sync ./website s3://cloudres.com
 
