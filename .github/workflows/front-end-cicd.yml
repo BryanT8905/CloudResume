@@ -31,12 +31,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: web-app-dist
-          path: website
-
       - name: Sync files to S3
         run: aws s3 sync ./website s3://cloudres.com
 
