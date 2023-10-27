@@ -28,7 +28,7 @@ jobs:
           aws --version
 
       - name: Upload artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
          name: web-app-dist
          path: './website'
