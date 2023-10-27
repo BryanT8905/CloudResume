@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,5 +27,28 @@ jobs:
           sudo ./aws/install --update
           aws --version
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@main
+        with:
+         name: web-app-dist
+         path: './website'
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+     - name: Download artifact
+       uses: actions/download-artifact@v4
+       with:
+        name: web-app-dist
+        path: website
+
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: website
+
       - name: Sync files to S3
         run: aws s3 sync ./website s3://cloudres.com
+
+      - name: Invalidate Cloudfront Cache
+        run:  aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
